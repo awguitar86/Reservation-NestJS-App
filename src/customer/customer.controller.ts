@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
@@ -25,6 +33,15 @@ export class CustomerController {
   @ApiOkResponse({ type: CustomerEntity })
   findOne(@Param('id') id: string) {
     return this.customerService.findOne(id);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({ type: CustomerEntity })
+  update(
+    @Param('id') id: string,
+    @Body() updateCustomerDto: CreateCustomerDto,
+  ) {
+    return this.customerService.update(id, updateCustomerDto);
   }
 
   @Delete(':id')

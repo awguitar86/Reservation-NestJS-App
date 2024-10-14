@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
@@ -25,6 +33,12 @@ export class VehicleController {
   @ApiOkResponse({ type: VehicleEntity })
   findOne(@Param('id') id: string) {
     return this.vehicleService.findOne(id);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({ type: VehicleEntity })
+  update(@Param('id') id: string, @Body() updateVehicleDto: CreateVehicleDto) {
+    return this.vehicleService.update(id, updateVehicleDto);
   }
 
   @Delete(':id')

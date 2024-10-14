@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -25,6 +33,15 @@ export class ReservationController {
   @ApiOkResponse({ type: ReservationEntity })
   findOne(@Param('id') id: string) {
     return this.reservationService.findOne(id);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({ type: ReservationEntity })
+  update(
+    @Param('id') id: string,
+    @Body() updateReservationDto: CreateReservationDto,
+  ) {
+    return this.reservationService.update(id, updateReservationDto);
   }
 
   @Delete(':id')

@@ -24,6 +24,13 @@ export class ReservationService {
     });
   }
 
+  async update(id: string, updateReservationDto: CreateReservationDto) {
+    return await this.prisma.customer.update({
+      where: { id },
+      data: updateReservationDto,
+    });
+  }
+
   async remove(id: string) {
     return await this.prisma.reservation.delete({ where: { id } });
   }

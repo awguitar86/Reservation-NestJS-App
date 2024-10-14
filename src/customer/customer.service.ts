@@ -32,6 +32,13 @@ export class CustomerService {
     });
   }
 
+  async update(id: string, updateCustomerDto: CreateCustomerDto) {
+    return await this.prisma.customer.update({
+      where: { id },
+      data: updateCustomerDto,
+    });
+  }
+
   async remove(id: string) {
     return await this.prisma.customer.delete({ where: { id } });
   }
