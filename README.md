@@ -1,5 +1,7 @@
 ## Project setup
 
+Before doing anything, run this:
+
 ```bash
 $ npm install
 ```
