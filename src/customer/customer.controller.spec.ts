@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CustomerController } from './customer.controller';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { CustomerEntity } from './entities/customer.entity';
 
 describe('CustomerController', () => {
@@ -18,6 +19,7 @@ describe('CustomerController', () => {
             create: jest.fn(),
             findAll: jest.fn(),
             findOne: jest.fn(),
+            update: jest.fn(),
             remove: jest.fn(),
           },
         },
@@ -90,6 +92,32 @@ describe('CustomerController', () => {
 
       expect(await controller.findOne('1')).toEqual(result);
       expect(service.findOne).toHaveBeenCalledWith('1');
+    });
+  });
+
+  describe('update', () => {
+    it('should update a customer', async () => {
+      const updateCustomerDto: UpdateCustomerDto = {
+        name: 'Pam Beesley',
+        email: 'pam.b@dundermifflin.com',
+        phone: '570-555-5678',
+      };
+
+      const updatedCustomer: CustomerEntity = {
+        id: '1',
+        name: 'Pam Beesley',
+        email: 'pam.b@dundermifflin.com',
+        phone: '570-555-5678',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest.spyOn(service, 'update').mockResolvedValue(updatedCustomer);
+
+      expect(await controller.update('1', updateCustomerDto)).toEqual(
+        updatedCustomer,
+      );
+      expect(service.update).toHaveBeenCalledWith('1', updateCustomerDto);
     });
   });
 

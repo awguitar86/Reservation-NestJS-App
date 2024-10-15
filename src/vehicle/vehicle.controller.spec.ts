@@ -3,6 +3,7 @@ import { VehicleController } from './vehicle.controller';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { VehicleEntity } from './entities/vehicle.entity';
+import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 
 describe('VehicleController', () => {
   let controller: VehicleController;
@@ -18,6 +19,7 @@ describe('VehicleController', () => {
             create: jest.fn(),
             findAll: jest.fn(),
             findOne: jest.fn(),
+            update: jest.fn(),
             remove: jest.fn(),
           },
         },
@@ -112,6 +114,35 @@ describe('VehicleController', () => {
 
       expect(await controller.findOne('1')).toEqual(result);
       expect(service.findOne).toHaveBeenCalledWith('1');
+    });
+  });
+
+  describe('update', () => {
+    it('should update a vehicle', async () => {
+      const updateVehicleDto: UpdateVehicleDto = {
+        make: 'Toyota',
+        model: '4Runner',
+        year: 2005,
+        vin: '1LMNO9P8QRST76543',
+      };
+
+      const updatedVehicle: VehicleEntity = {
+        id: '1',
+        make: 'Toyota',
+        model: '4Runner',
+        year: 2005,
+        vin: '1LMNO9P8QRST76543',
+        customerId: '1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest.spyOn(service, 'update').mockResolvedValue(updatedVehicle);
+
+      expect(await controller.update('1', updateVehicleDto)).toEqual(
+        updatedVehicle,
+      );
+      expect(service.update).toHaveBeenCalledWith('1', updateVehicleDto);
     });
   });
 

@@ -10,6 +10,7 @@ import {
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { CustomerEntity } from './entities/customer.entity';
 
 @Controller('customer')
@@ -39,7 +40,7 @@ export class CustomerController {
   @ApiOkResponse({ type: CustomerEntity })
   update(
     @Param('id') id: string,
-    @Body() updateCustomerDto: CreateCustomerDto,
+    @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
     return this.customerService.update(id, updateCustomerDto);
   }

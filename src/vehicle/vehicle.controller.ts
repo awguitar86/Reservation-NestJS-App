@@ -11,6 +11,7 @@ import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { VehicleEntity } from './entities/vehicle.entity';
+import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 
 @Controller('vehicle')
 @ApiTags('vehicle')
@@ -37,7 +38,7 @@ export class VehicleController {
 
   @Patch(':id')
   @ApiOkResponse({ type: VehicleEntity })
-  update(@Param('id') id: string, @Body() updateVehicleDto: CreateVehicleDto) {
+  update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto) {
     return this.vehicleService.update(id, updateVehicleDto);
   }
 

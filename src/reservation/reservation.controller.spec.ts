@@ -3,6 +3,7 @@ import { ReservationController } from './reservation.controller';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { ReservationEntity } from './entities/reservation.entity';
+import { UpdateReservationDto } from './dto/update-reservation.dto';
 
 describe('ReservationController', () => {
   let controller: ReservationController;
@@ -18,6 +19,7 @@ describe('ReservationController', () => {
             create: jest.fn(),
             findAll: jest.fn(),
             findOne: jest.fn(),
+            update: jest.fn(),
             remove: jest.fn(),
           },
         },
@@ -106,6 +108,30 @@ describe('ReservationController', () => {
       expect(service.findOne).toHaveBeenCalledWith('1');
     });
   });
+
+  describe('update', () => {
+    it('should update a reservation', async () => {
+      const updateReservationDto: UpdateReservationDto = {
+        timeSlot: new Date('2024-10-18T10:00:00Z'),
+      };
+      const updatedReservation: ReservationEntity = {
+        id: '1',
+        vehicleId: '1',
+        customerId: '1',
+        timeSlot: new Date('2024-10-18T10:00:00Z'),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest.spyOn(service, 'update').mockResolvedValue(updatedReservation);
+
+      expect(await controller.update('1', updateReservationDto)).toEqual(
+        updatedReservation,
+      );
+      expect(service.update).toHaveBeenCalledWith('1', updateReservationDto);
+    });
+  });
+
   describe('remove', () => {
     it('should remove a reservation', async () => {
       const result: ReservationEntity = {

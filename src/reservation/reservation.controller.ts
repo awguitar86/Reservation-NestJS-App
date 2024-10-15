@@ -11,6 +11,7 @@ import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { ReservationEntity } from './entities/reservation.entity';
+import { UpdateReservationDto } from './dto/update-reservation.dto';
 
 @Controller('reservation')
 @ApiTags('reservation')
@@ -39,7 +40,7 @@ export class ReservationController {
   @ApiOkResponse({ type: ReservationEntity })
   update(
     @Param('id') id: string,
-    @Body() updateReservationDto: CreateReservationDto,
+    @Body() updateReservationDto: UpdateReservationDto,
   ) {
     return this.reservationService.update(id, updateReservationDto);
   }

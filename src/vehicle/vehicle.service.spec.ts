@@ -18,6 +18,7 @@ describe('VehicleService', () => {
               create: jest.fn(),
               findMany: jest.fn(),
               findUnique: jest.fn(),
+              update: jest.fn(),
               delete: jest.fn(),
             },
           },
@@ -76,7 +77,7 @@ describe('VehicleService', () => {
     expect(prisma.vehicle.findMany).toHaveBeenCalled();
   });
 
-  it('should return a vehicle with customer', async () => {
+  it('should return a vehicle with a customer and reservations', async () => {
     const vehicle = {
       id: '1',
       make: 'Toyota',
@@ -84,6 +85,15 @@ describe('VehicleService', () => {
       year: 2024,
       vin: '1ABCD2E3FGHI45678',
       customerId: '1',
+      customer: {
+        id: '1',
+        name: 'Jim Halpert',
+        email: 'jim.h@dundermifflin.com',
+        phone: '570-555-2468',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      reservations: [],
     };
 
     (prisma.vehicle.findUnique as jest.Mock).mockResolvedValue(vehicle);
@@ -93,7 +103,37 @@ describe('VehicleService', () => {
       where: { id: '1' },
       include: {
         customer: true,
+        reservations: {
+          where: {
+            vehicleId: '1',
+          },
+        },
       },
+    });
+  });
+
+  it('should update a vehicle', async () => {
+    const updatedVehicle = {
+      make: 'Toyota',
+      model: '4Runner',
+      year: 2005,
+      vin: '1LMNO9P8QRST76543',
+    };
+    const vehicle = {
+      id: '1',
+      make: 'Toyota',
+      model: '4Runner',
+      year: 2005,
+      vin: '1LMNO9P8QRST76543',
+      customerId: '1',
+    };
+
+    (prisma.vehicle.update as jest.Mock).mockResolvedValue(vehicle);
+
+    expect(await service.update('1', updatedVehicle)).toEqual(vehicle);
+    expect(prisma.vehicle.update).toHaveBeenCalledWith({
+      where: { id: '1' },
+      data: updatedVehicle,
     });
   });
 

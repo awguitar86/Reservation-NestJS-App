@@ -71,28 +71,6 @@ describe('CustomerService', () => {
     expect(prisma.customer.findMany).toHaveBeenCalled();
   });
 
-  it('should update a customer', async () => {
-    const updatedCustomer = {
-      email: 'michaelscott@testmail.com',
-    };
-    const customer = {
-      id: '1',
-      name: 'Mike Walters',
-      email: 'michaelscott@testmail.com',
-      phone: '801-555-6789',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    (prisma.customer.update as jest.Mock).mockResolvedValue(customer);
-
-    expect(await service.update('1', updatedCustomer)).toEqual(customer);
-    expect(prisma.customer.update).toHaveBeenCalledWith({
-      where: { id: '1' },
-      data: updatedCustomer,
-    });
-  });
-
   it('should return a customer with vehicles and reservations', async () => {
     const customer = {
       id: '1',
@@ -120,6 +98,28 @@ describe('CustomerService', () => {
           },
         },
       },
+    });
+  });
+
+  it('should update a customer', async () => {
+    const updatedCustomer = {
+      email: 'michaelscott@testmail.com',
+    };
+    const customer = {
+      id: '1',
+      name: 'Mike Walters',
+      email: 'michaelscott@testmail.com',
+      phone: '801-555-6789',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    (prisma.customer.update as jest.Mock).mockResolvedValue(customer);
+
+    expect(await service.update('1', updatedCustomer)).toEqual(customer);
+    expect(prisma.customer.update).toHaveBeenCalledWith({
+      where: { id: '1' },
+      data: updatedCustomer,
     });
   });
 

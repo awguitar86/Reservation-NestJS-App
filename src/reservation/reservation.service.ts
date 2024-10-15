@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
+import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -24,8 +25,8 @@ export class ReservationService {
     });
   }
 
-  async update(id: string, updateReservationDto: CreateReservationDto) {
-    return await this.prisma.customer.update({
+  async update(id: string, updateReservationDto: UpdateReservationDto) {
+    return await this.prisma.reservation.update({
       where: { id },
       data: updateReservationDto,
     });

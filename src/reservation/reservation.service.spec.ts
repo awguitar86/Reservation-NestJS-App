@@ -18,6 +18,7 @@ describe('ReservationService', () => {
               create: jest.fn(),
               findMany: jest.fn(),
               findUnique: jest.fn(),
+              update: jest.fn(),
               delete: jest.fn(),
             },
           },
@@ -80,6 +81,24 @@ describe('ReservationService', () => {
       customerId: '1',
       vehicleId: '1',
       timeSlot: new Date(),
+      customer: {
+        id: '1',
+        name: 'Michael Scott',
+        email: 'michael.s@dundermifflin.com',
+        phone: '570-555-7890',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      vehicle: {
+        id: '1',
+        make: 'Crystler',
+        model: 'Sebring',
+        year: 2007,
+        vin: '1HGCM82633A123456',
+        customerId: '1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     };
 
     (prisma.reservation.findUnique as jest.Mock).mockResolvedValue(reservation);
@@ -91,6 +110,44 @@ describe('ReservationService', () => {
         customer: true,
         vehicle: true,
       },
+    });
+  });
+
+  it('should update a reservation', async () => {
+    const updatedReservation = {
+      timeSlot: new Date('2024-10-18T10:00:00Z'),
+    };
+    const reservation = {
+      id: '1',
+      customerId: '1',
+      vehicleId: '1',
+      timeSlot: new Date('2024-10-18T10:00:00Z'),
+      customer: {
+        id: '1',
+        name: 'Michael Scott',
+        email: 'michael.s@dundermifflin.com',
+        phone: '570-555-7890',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      vehicle: {
+        id: '1',
+        make: 'Crystler',
+        model: 'Sebring',
+        year: 2007,
+        vin: '1HGCM82633A123456',
+        customerId: '1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    };
+
+    (prisma.reservation.update as jest.Mock).mockResolvedValue(reservation);
+
+    expect(await service.update('1', updatedReservation)).toEqual(reservation);
+    expect(prisma.reservation.update).toHaveBeenCalledWith({
+      where: { id: '1' },
+      data: updatedReservation,
     });
   });
 
